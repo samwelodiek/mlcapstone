@@ -57,21 +57,22 @@ elif section == "2. Problem Statement":
     * **Why is it important?** Accurate valuations are critical for home buyers, sellers, and real estate investors to make informed financial decisions.
     * **ML Task:** Regression (Supervised Learning).
     """)
-    elif section == "3. Data Collection & Understanding":
+
+elif section == "3. Data Collection & Understanding":
     st.header("Data Understanding")
     st.write("First 5 rows of the cleaned dataset:")
     st.dataframe(df.head())
     
-    st.subheader("Statistical Summary")
     st.write(df.describe())
-
-    st.subheader("Target Variable Distribution")
-    fig, ax = plt.subplots(1, 2, figsize=(12, 5))
-    sns.histplot(np.expm1(df['LogSalePrice']), kde=True, ax=ax[0], color='blue')
-    ax[0].set_title("Original SalePrice (Skewed)")
-    sns.histplot(df['LogSalePrice'], kde=True, ax=ax[1], color='green')
-    ax[1].set_title("Log-Transformed SalePrice (Normal)")
-    st.pyplot(fig)
+    
+        st.subheader("Target Variable Distribution")
+        fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+        sns.histplot(np.expm1(df['LogSalePrice']), kde=True, ax=ax[0], color='blue')
+        ax[0].set_title("Original SalePrice (Skewed)")
+        sns.histplot(df['LogSalePrice'], kde=True, ax=ax[1], color='green')
+        ax[1].set_title("Log-Transformed SalePrice (Normal)")
+        st.pyplot(fig)
+    
     elif section == "4. Data Preprocessing":
     st.header("Data Preprocessing Steps")
     st.markdown("""
@@ -91,11 +92,10 @@ elif section == "5. Modeling Approach":
         'Model': ['Linear Regression', 'LASSO', 'Random Forest', 'Gradient Boosting'],
         'RMSE Score': [0.1304, 0.1130, 0.1360, 0.1247] # From your previous notebook outputs
     }
-    st.table(pd.DataFrame(comparison_data).set_index('Model'))
+    st.dataframe(pd.DataFrame(comparison_data))
+        st.success("LASSO was selected as the best baseline linear model, while Gradient Boosting provided strong non-linear performance.")
     
-    st.success("LASSO was selected as the best baseline linear model, while Gradient Boosting provided strong non-linear performance.")
     elif section == "6. Results & Evaluation":
-    st.header("Feature Selection Results")
     st.write("We used LASSO Regression to select the most important features. These are the top 20 features that survived regularization.")
 
     # --- HEATMAP CODE ---
@@ -113,15 +113,13 @@ elif section == "5. Modeling Approach":
     corr_data = df[selected_raw_features].corr()
     
     fig, ax = plt.subplots(figsize=(10, 8))
-    sns.heatmap(corr_data, annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5, ax=ax)
-    st.pyplot(fig)
+        fig, ax = plt.subplots(figsize=(10, 8))
+        sns.heatmap(corr_data, annot=True, fmt='.2f', cmap='coolwarm', ax=ax)
+        st.pyplot(fig)
+        st.info("Note: Categorical features selected by LASSO (like Neighborhood_Crawfor) are not shown in this correlation matrix as they require One-Hot Encoding.")
     
-    st.info("Note: Categorical features selected by LASSO (like Neighborhood_Crawfor) are not shown in this correlation matrix as they require One-Hot Encoding.")
     elif section == "7. Error Analysis":
     st.header("Error Analysis")
-    st.write("""
-    We examine where the model makes mistakes. Ideally, residuals (Actual - Predicted) should be randomly distributed around zero.
-    """)
     
     # SIMULATING PREDICTIONS (In real deployment, load your model and predict)
     # For demonstration, we will generate synthetic predictions based on actuals with some noise
@@ -154,16 +152,16 @@ elif section == "5. Modeling Approach":
     st.pyplot(fig2)
     
     st.markdown("""
-    **Interpretation:**
-    * The points are clustered around the red line (Identity Line), indicating good predictions.
-    * There is no strong pattern in the Residual Plot (Heteroscedasticity), suggesting the model captures the variance well.
-    """)
+        **Interpretation:**
+        * The points are clustered around the red line (Identity Line), indicating good predictions.
+        * There is no strong pattern in the Residual Plot (Heteroscedasticity), suggesting the model captures the variance well.
+        """)
+    
     elif section == "8. Conclusion & Future Work":
-    st.header("Conclusion")
-    st.success("""
-    * **Best Model:** Gradient Boosting (RMSE: 0.1247)
-    * **Key Drivers:** Total Square Footage, Overall Quality, and Year Built were the strongest predictors of house price.
-    """)
+        st.header("Conclusion")
+        st.markdown("""
+        * **Key Drivers:** Total Square Footage, Overall Quality, and Year Built were the strongest predictors of house price.
+        """)
     
     st.subheader("Future Work")
     st.write("- [ ] Experiment with Stacking/Ensemble methods.")
